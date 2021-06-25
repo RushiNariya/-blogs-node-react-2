@@ -1,0 +1,33 @@
+.blog__body{
+  display: flex;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.blog__body_content{
+  width: 70%;
+}
+
+.blog__card_root_container{
+  max-width: 700px;
+  min-width: 700px;
+  margin-top: 10px !important;
+}
+
+.no__blogs{
+    position: relative !important;
+    top: 20px; 
+}
+
+@media only screen and (max-width: 690px) {
+  .blog__body{
+    flex-direction: column-reverse;
+    align-items: center;
+  }
+  .blog__card_root_container{
+    min-width: 249px;
+  }
+  .no__blogs{
+    margin: auto;
+  }
+}

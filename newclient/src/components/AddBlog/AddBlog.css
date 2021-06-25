@@ -1,0 +1,25 @@
+.blog_domain {
+  width: 50%;
+}
+
+.read-more {
+  text-decoration: none;
+  /* border: 2px red solid; */
+  border-radius: 5px;
+  padding: 5px;
+  /* background-color: #fde5e4; */
+}
+
+h1 {
+  margin: 0;
+}
+
+.submit__button{
+  /* backgroundColor: #2e5c4d; */
+
+}
+
+.new__blog__name{
+  color: #85a399 !important;
+  border-color: #85a399 !important;
+}

@@ -1,0 +1,9 @@
+.navlink {
+  text-decoration: none;
+  color: white;
+}
+
+.appbar {
+  background-color: #541d36 !important;
+  height: 4.5rem;
+}

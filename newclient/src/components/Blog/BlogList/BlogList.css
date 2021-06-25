@@ -1,0 +1,37 @@
+.blog__pagination{
+  position: relative;
+}
+
+.bloglist__container{
+  display: flex;
+  justify-content: space-evenly;
+  /* align-items: ; */
+}
+.multi__serach{
+  padding: 10px;
+
+}
+
+.multi__search__button{
+  border-color: #2e5c4d !important;
+  color: #2e5c4d !important;
+  padding: 5px !important;
+  margin: 7px !important;
+}
+
+.multi__search__button.active{
+  background-color: #85a399;
+  color: #fff!important;
+}
+
+.multi__search__button:hover {
+  background-color: transparent!important;
+  color: #2e5c4d!important;
+}
+
+@media only screen and (max-width: 690px) {
+  .bloglist__container{
+    flex-direction: column-reverse;
+    align-items: center;
+  }
+}
