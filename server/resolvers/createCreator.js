@@ -15,6 +15,12 @@ module.exports = async ({ input }) => {
       throw new Error('registration cridentials are required!');
     }
 
+    const checkCreator = await Creator.findOne({ email: email});
+
+    if(checkCreator){
+      throw new Error('User with this email already exists!');
+    }
+
     const hashPassword = encryptPassword(password);
 
     const creator = new Creator({

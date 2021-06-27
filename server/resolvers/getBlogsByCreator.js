@@ -16,12 +16,14 @@ module.exports = async ({ page, limits, search }, context) => {
       }
 
       let blogCount, blogs;
+      let status = ['active', 'reject'];
       const perPage = parseInt(limits);
       const pageNumber = parseInt(page);
-      console.log(perPage, pageNumber, search);
+      // console.log(perPage, pageNumber, search);
       if (search === 'All') {
         blogs = await Blog.find({
           creator: contextResult.creatorId,
+          status: { $in: status },
         })
           .sort({
             blogName: 1,
@@ -42,11 +44,13 @@ module.exports = async ({ page, limits, search }, context) => {
 
         blogCount = await Blog.countDocuments({
           creator: contextResult.creatorId,
+          status: { $in: status },
         });
       } else {
         blogs = await Blog.find({
           creator: contextResult.creatorId,
           stack: search,
+          status: { $in: ['active', 'reject'] },
         })
           .sort({
             blogName: 1,
@@ -68,6 +72,7 @@ module.exports = async ({ page, limits, search }, context) => {
         blogCount = await Blog.countDocuments({
           creator: contextResult.creatorId,
           stack: search,
+          status: { $in: ['active', 'reject'] },
         });
       }
 

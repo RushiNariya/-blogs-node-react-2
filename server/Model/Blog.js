@@ -4,6 +4,7 @@ const Schema = mongoose.Schema;
 const blogSchema = new Schema({
   blogName: Schema.Types.String,
   stack: Schema.Types.String,
+  status: Schema.Types.String,
   description: Schema.Types.String,
   creator: {
     type: mongoose.Schema.Types.ObjectId,

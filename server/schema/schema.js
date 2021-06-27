@@ -14,6 +14,7 @@ const schema = buildSchema(`
     likes: [Creator]
     comments: [Comment]
     image: String
+    status: String
   }
   type BlogsPage {
     blogs: [Blog!]!
@@ -48,6 +49,7 @@ const schema = buildSchema(`
     Admin
     User
     Author
+    Moderator
   }
 
   type GetBlogResponse{
@@ -95,6 +97,16 @@ const schema = buildSchema(`
     data: Blog
     error: String
   }
+  type deleteBlogResponse{
+    status: String
+    data: Blog
+    error: String
+  }
+  type certifyBlog{
+    status: String
+    data: Blog
+    error: String
+  }
   type Query {
     getBlog(id: ID): GetBlogResponse
     getBlogs(page: Int, limits: Int, search: String): GetAllBlogsResponse
@@ -108,6 +120,7 @@ const schema = buildSchema(`
     blogName: String
     stack: Stack
     description: String
+    status: String
   }
 
   input CreatorInput{
@@ -132,6 +145,8 @@ const schema = buildSchema(`
     loginUser(input: Login): LoginResponse
     toggleLike(input: ToggleLike): ToggleLikeResponse
     addComment(input: addComment): addCommentResponse
+    deleteBlog(id: ID) : deleteBlogResponse
+    certifyBlog(id: ID, status: String): certifyBlog
   }
 `);
 

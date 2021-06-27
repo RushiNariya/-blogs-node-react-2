@@ -10,6 +10,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import {
   getBlogsByCreatorQuery,
   toggleLikeMutation,
+  deleteBlogMutation,
 } from '../../../queries/queries';
 import { GlobalContext } from '../../../context/globalProvider';
 import Pagination from '../../Pagination/Pagination';
@@ -36,6 +37,7 @@ function MyBlogs() {
     variables: { page: currentPage, limits: postsPerPage, search },
   });
   const [toggleLike] = useMutation(toggleLikeMutation);
+  const [deleteBlog] = useMutation(deleteBlogMutation);
 
   const toggleLikeFunction = (blogId) => {
     toggleLike({
@@ -46,6 +48,23 @@ function MyBlogs() {
     })
       .then((res) => {
         console.log(res.data.toggleLike.error);
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
+  };
+
+  const deleteBlogById = (id) => {
+    console.log('inside delete handler!');
+    deleteBlog({
+      variables: {
+        id,
+      },
+    })
+      .then(async (res) => {
+        console.log(res);
+        await refetch();
+        // console.log(res.data.toggleLike.error);
       })
       .catch((error) => {
         console.log(error.message);
@@ -94,22 +113,28 @@ function MyBlogs() {
                   // key={blog._id}
                   loading="loading"
                   blog={null}
+                  myBlog="myblogs"
                   toggleLikeOnClick={null}
+                  // deleteBlogHandler={null}
                 />
               </>
             ) : articles?.length ? (
               articles?.map((blog) => (
                 <Blog
                   key={blog._id}
+                  myBlog="myblogs"
                   blog={blog}
                   toggleLikeOnClick={toggleLikeFunction}
+                  deleteBlogHandler={deleteBlogById}
                 />
               ))
             ) : (
               <Blog
                 // key={blog._id}
                 blog={null}
+                myBlog="myblogs"
                 toggleLikeOnClick={null}
+                // deleteBlogHandler={null}
               />
             )}
           </div>

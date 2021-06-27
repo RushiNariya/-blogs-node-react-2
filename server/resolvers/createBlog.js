@@ -14,7 +14,7 @@ module.exports = async ({ input }, context) => {
       if (contextResult.role !== 'Author') {
         throw new Error('User is not authorized!');
       }
-      const { blogName, stack, description, creator } = input;
+      const { blogName, stack, description, creator, status } = input;
       const blog = new Blog({
         creator: contextResult.creatorId,
         blogName: blogName,
@@ -22,6 +22,7 @@ module.exports = async ({ input }, context) => {
         likes: [],
         comments: [],
         description: description,
+        status: status,
       });
       const newBlog = await blog.save();
       return commonResponse('created', newBlog, null);

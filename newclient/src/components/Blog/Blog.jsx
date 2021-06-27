@@ -5,7 +5,10 @@ import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import FavoriteIcon from '@material-ui/icons/Favorite';
+import DeleteIcon from '@material-ui/icons/Delete';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
+import ThumbDownIcon from '@material-ui/icons/ThumbDown';
+import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 // import { red } from '@material-ui/core/colors';
 import {
   // Grid,
@@ -29,6 +32,10 @@ const useStyles = makeStyles((theme) => ({
     textAlign: 'center',
     color: theme.palette.text.secondary,
     minHeight: '100px',
+  },
+  clarify: {
+    height: 0,
+    // paddingTop: '56.25%', // 16:9
   },
   // root: {
   //   maxWidth: 745,
@@ -57,10 +64,22 @@ const useStyles = makeStyles((theme) => ({
     objectFit: 'contain',
     paddingTop: '56.25%', // 16:9
   },
+  deleteIcon: {
+    color: '#2e5c4d',
+    // position: 'absolute',
+    // right: '10vw',
+  },
 }));
 
-function Blog({ blog, toggleLikeOnClick, loading }) {
-  const { userId, token } = useContext(GlobalContext);
+function Blog({
+  blog,
+  toggleLikeOnClick,
+  loading,
+  myBlog,
+  deleteBlogHandler,
+  certifyBlogHandler,
+}) {
+  const { userId, token, role } = useContext(GlobalContext);
 
   const classes = useStyles();
   if (loading) {
@@ -68,21 +87,23 @@ function Blog({ blog, toggleLikeOnClick, loading }) {
       <div className="blog__card_root_container no__blogs">Loading...</div>
     );
   }
+  // console.log(myBlog);
   return (
     <>
       {blog ? (
         <Card className="blog__card_root_container">
           <CardHeader
-            avatar={
-              (
-                <Avatar aria-label="recipe" className={classes.avatar}>
-                  {blog.creator.firstName[0].toUpperCase()}
-                </Avatar>
-              )
-            }
+            avatar={(
+              <Avatar aria-label="recipe" className={classes.avatar}>
+                {blog.creator.firstName[0].toUpperCase()}
+              </Avatar>
+            )}
             title={`${blog.creator.firstName} ${blog.creator.lastName}`}
             subheader={`related to ${blog.stack}`}
-          />
+          >
+            {/* <p>hiii</p> */}
+          </CardHeader>
+
           <div className="blog__body">
             <div className="blog__body_content">
               <CardContent>
@@ -93,9 +114,12 @@ function Blog({ blog, toggleLikeOnClick, loading }) {
                 >
                   {blog.blogName}
                 </Typography>
-                <Typography className={classes.pos} color="textSecondary">
-                  {blog.stack}
-                </Typography>
+                { myBlog === 'myblogs' ? (
+                  <Typography className={classes.pos} color="textSecondary">
+                    {blog.status}
+                  </Typography>
+                ) : null }
+
                 {/* <Typography variant="body2" component="p">
               </Typography> */}
                 <Typography className={classes.pos} color="textSecondary">
@@ -113,7 +137,7 @@ function Blog({ blog, toggleLikeOnClick, loading }) {
             </div>
           </div>
           <CardActions>
-            {token && (
+            {token && role !== 'Moderator' && (
               <IconButton
                 aria-label="add to favorites"
                 onClick={() => toggleLikeOnClick(blog._id)}
@@ -133,6 +157,30 @@ function Blog({ blog, toggleLikeOnClick, loading }) {
                 Read More
               </NavLink>
             </Button>
+            {role === 'Moderator' ? (
+              <>
+                <IconButton
+                  aria-label="add to favorites"
+                  onClick={() => certifyBlogHandler(blog._id, 'active')}
+                >
+                  <ThumbUpIcon className={classes.deleteIcon} />
+                </IconButton>
+                <IconButton
+                  aria-label="add to favorites"
+                  onClick={() => certifyBlogHandler(blog._id, 'reject')}
+                >
+                  <ThumbDownIcon className={classes.deleteIcon} />
+                </IconButton>
+              </>
+            ) : null}
+            {myBlog === 'myblogs' ? (
+              <IconButton
+                aria-label="add to favorites"
+                onClick={() => deleteBlogHandler(blog._id)}
+              >
+                <DeleteIcon className={classes.deleteIcon} />
+              </IconButton>
+            ) : null}
           </CardActions>
         </Card>
       ) : (
@@ -154,6 +202,7 @@ Blog.propTypes = {
     }),
     description: PropTypes.string.isRequired,
     stack: PropTypes.string.isRequired,
+    status: PropTypes.string.isRequired,
     likes: PropTypes.arrayOf({
       _id: PropTypes.string,
     }),
@@ -165,6 +214,9 @@ Blog.propTypes = {
   toggleLikeOnClick: PropTypes.func,
   // eslint-disable-next-line react/require-default-props
   loading: PropTypes.string,
+  myBlog: PropTypes.string,
+  deleteBlogHandler: PropTypes.func,
+  certifyBlogHandler: PropTypes.func,
 };
 
 export default Blog;

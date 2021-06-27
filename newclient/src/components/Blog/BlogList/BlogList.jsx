@@ -6,7 +6,7 @@ import { useQuery, useMutation } from '@apollo/client';
 // import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
 // import { Grid } from '@material-ui/core';
-import { getBlogsQuery, toggleLikeMutation } from '../../../queries/queries';
+import { getBlogsQuery, toggleLikeMutation, certifyBlogMutation } from '../../../queries/queries';
 import { GlobalContext } from '../../../context/globalProvider';
 import Pagination from '../../Pagination/Pagination';
 import BLogFilter from '../BLogFilter/BLogFilter';
@@ -35,6 +35,7 @@ function BlogList() {
     variables: { page: currentPage, limits: postsPerPage, search },
   });
   const [toggleLike] = useMutation(toggleLikeMutation);
+  const [certifyBlog] = useMutation(certifyBlogMutation);
 
   const toggleLikeFunction = (blogId) => {
     toggleLike({
@@ -51,6 +52,41 @@ function BlogList() {
       });
   };
 
+  const certifyBlogById = (id, blogStatus) => {
+    console.log('inside certify handler!');
+    certifyBlog({
+      variables: {
+        id,
+        status: blogStatus,
+      },
+    })
+      .then(async (res) => {
+        console.log(res);
+        await refetch();
+        // console.log(res.data.toggleLike.error);
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
+  };
+
+  // const approveBlogById = (id) => {
+  //   console.log('inside delete handler!');
+  //   deleteBlog({
+  //     variables: {
+  //       id,
+  //     },
+  //   })
+  //     .then(async (res) => {
+  //       console.log(res);
+  //       await refetch();
+  //       // console.log(res.data.toggleLike.error);
+  //     })
+  //     .catch((error) => {
+  //       console.log(error.message);
+  //     });
+  // };
+
   const setFilterSearch = (keyword) => {
     setSearch(keyword);
   };
@@ -63,7 +99,7 @@ function BlogList() {
 
   useEffect(() => {
     if (loading === false && data !== undefined) {
-      getBlogs(data.getBlogs.data.blogs);
+      getBlogs(data?.getBlogs?.data?.blogs);
     }
     if (loading === false && data?.getBlogs?.error) {
       console.log(data.getBlogs.error);
@@ -92,6 +128,7 @@ function BlogList() {
                   loading="loading"
                   blog={null}
                   toggleLikeOnClick={null}
+                  certifyBlogHandler={null}
                 />
               </>
             ) : articles?.length ? (
@@ -100,6 +137,7 @@ function BlogList() {
                   key={blog._id}
                   blog={blog}
                   toggleLikeOnClick={toggleLikeFunction}
+                  certifyBlogHandler={certifyBlogById}
                 />
               ))
             ) : (
@@ -107,6 +145,7 @@ function BlogList() {
                 // key={blog._id}
                 blog={null}
                 toggleLikeOnClick={null}
+                certifyBlogHandler={null}
               />
             )}
           </div>

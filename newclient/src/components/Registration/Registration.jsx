@@ -6,7 +6,7 @@ import Grid from '@material-ui/core/Grid';
 import { NavLink, useHistory } from 'react-router-dom';
 import { useMutation } from '@apollo/client';
 // import { GlobalContext } from '../../context/globalProvider';
-import { getBlogsQuery, registerUserMutation } from '../../queries/queries';
+import { registerUserMutation } from '../../queries/queries';
 import './Registration.css';
 
 const useStyles = makeStyles((theme) => ({
@@ -58,6 +58,9 @@ function Registration() {
       alert('password and confirm password not matched!!!');
       return;
     }
+    // eslint-disable-next-line no-debugger
+    // debugger;
+    console.log('hiii', email, role);
 
     createCreator({
       variables: {
@@ -69,7 +72,7 @@ function Registration() {
         password,
         role,
       },
-      refetchQueries: [{ query: getBlogsQuery }],
+      // refetchQueries: [{ query: getBlogsQuery }],
     })
       .then((res) => {
         if (res.data.createCreator.status === 'created') {
@@ -160,6 +163,7 @@ function Registration() {
                 select
                 label="Role"
                 fullWidth
+                value={role}
                 onChange={(e) => setRole(e.target.value)}
                 SelectProps={{
                   native: true,
@@ -168,6 +172,7 @@ function Registration() {
               >
                 <option>select one</option>
                 <option value="User">User</option>
+                <option value="Moderator">Moderator</option>
                 <option value="Author">Author</option>
               </TextField>
             </Grid>

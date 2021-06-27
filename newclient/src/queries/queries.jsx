@@ -48,6 +48,7 @@ const getBlogsByCreatorQuery = gql`
           }
           blogName
           stack
+          status
           image
           description
           likes {
@@ -191,9 +192,19 @@ const registerUserMutation = gql`
 `;
 
 const addBlogMutation = gql`
-  mutation ($blogName: String!, $stack: Stack!, $description: String!) {
+  mutation (
+    $blogName: String!
+    $stack: Stack!
+    $description: String!
+    $status: String!
+  ) {
     createBlog(
-      input: { blogName: $blogName, stack: $stack, description: $description }
+      input: {
+        blogName: $blogName
+        stack: $stack
+        description: $description
+        status: $status
+      }
     ) {
       status
       data {
@@ -210,6 +221,59 @@ const addBlogMutation = gql`
   }
 `;
 
+const deleteBlogMutation = gql`
+  mutation ($id: ID) {
+    deleteBlog(id: $id) {
+      status
+      error
+      data {
+        _id
+        creator {
+          firstName
+        }
+        description
+        likes {
+          _id
+        }
+        comments {
+          creatorId {
+            firstName
+            lastName
+          }
+          comment
+        }
+        status
+      }
+    }
+  }
+`;
+const certifyBlogMutation = gql`
+  mutation ($id: ID, $status: String!) {
+    certifyBlog(id: $id, status: $status) {
+      status
+      error
+      data {
+        _id
+        creator {
+          firstName
+        }
+        description
+        likes {
+          _id
+        }
+        comments {
+          creatorId {
+            firstName
+            lastName
+          }
+          comment
+        }
+        status
+      }
+    }
+  }
+`;
+
 export {
   getBlogsQuery,
   getBlogQuery,
@@ -219,4 +283,6 @@ export {
   toggleLikeMutation,
   addCommentMutation,
   getBlogsByCreatorQuery,
+  deleteBlogMutation,
+  certifyBlogMutation,
 };

@@ -16,7 +16,7 @@ function Pagination({
   for (let i = 1; i <= Math.ceil(totalPosts / postsPerPage); i++) {
     pageNumbers.push(i);
   }
-  console.log(totalPosts, pageNumbers);
+  // console.log(totalPosts, pageNumbers);
   return (
     <nav>
       <ul className="pagination justify-content-start">

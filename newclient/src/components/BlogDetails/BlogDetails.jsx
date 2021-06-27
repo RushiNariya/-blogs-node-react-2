@@ -50,7 +50,9 @@ function BlogDetails({ match }) {
   const classes = useStyles();
   const [addComment] = useMutation(addCommentMutation);
 
-  const { article, getBlogById } = useContext(GlobalContext);
+  const {
+    article, getBlogById, role, token,
+  } = useContext(GlobalContext);
   const history = useHistory();
   const [comment, setComment] = useState('');
 
@@ -113,7 +115,10 @@ function BlogDetails({ match }) {
       </div>
       <hr />
       <article className="blog-details-domain">
-        <h3>Subject :{article && article.stack}</h3>
+        <h3>
+          Subject :
+          {article && article.stack}
+        </h3>
         <br />
         {article?.description}
         <br />
@@ -125,40 +130,48 @@ function BlogDetails({ match }) {
         <i>{article?.creator?.profession}</i>
       </article>
       <hr />
-      <h4>Comments</h4>
-      <form className={classes.form} onSubmit={submitForm}>
-        <TextField
-          id="outlined-multiline-static"
-          label="Comment Here"
-          multiline
-          margin="normal"
-          rows={4}
-          fullWidth
-          value={comment}
-          onChange={(e) => setComment(e.target.value)}
-          // variant="outlined"
-        />
-        <Button type="submit" variant="contained" className={classes.submit}>
-          Post
-        </Button>
-      </form>
-      {article?.comments?.length
-        ? article.comments.map((comm) => (
-            <div className={classes.root}>
-              <Paper className={classes.paper}>
-                <Grid container wrap="nowrap" spacing={2}>
-                  <Grid item>
-                    <Avatar>{comm.creatorId.firstName[0]}</Avatar>
+      {token && role !== 'Moderator' ? (
+        <>
+          <h4>Comments</h4>
+          <form className={classes.form} onSubmit={submitForm}>
+            <TextField
+              id="outlined-multiline-static"
+              label="Comment Here"
+              multiline
+              margin="normal"
+              rows={4}
+              fullWidth
+              value={comment}
+              onChange={(e) => setComment(e.target.value)}
+              // variant="outlined"
+            />
+            <Button
+              type="submit"
+              variant="contained"
+              className={classes.submit}
+            >
+              Post
+            </Button>
+          </form>
+          {article?.comments?.length
+            ? article.comments.map((comm) => (
+              <div className={classes.root}>
+                <Paper className={classes.paper}>
+                  <Grid container wrap="nowrap" spacing={2}>
+                    <Grid item>
+                      <Avatar>{comm.creatorId.firstName[0]}</Avatar>
+                    </Grid>
+                    <Grid item xs>
+                      <Typography variant="h6">{`${comm.creatorId.firstName} ${comm.creatorId.lastName}`}</Typography>
+                      <Typography>{comm.comment}</Typography>
+                    </Grid>
                   </Grid>
-                  <Grid item xs>
-                    <Typography variant="h6">{`${comm.creatorId.firstName} ${comm.creatorId.lastName}`}</Typography>
-                    <Typography>{comm.comment}</Typography>
-                  </Grid>
-                </Grid>
-              </Paper>
-            </div>
-          ))
-        : null}
+                </Paper>
+              </div>
+            ))
+            : null}
+        </>
+      ) : null}
     </div>
   );
 }

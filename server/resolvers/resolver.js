@@ -14,6 +14,8 @@ const getAllCreators = require('./getCreators');
 const loginCurrentUser = require('./loginUser');
 const toggleLikes = require('./toggleLike');
 const addComments = require('./addComment');
+const deleteBlogById = require('./deleteBlog');
+const certifyBlogByModerator = require('./certifyBlogByModerator');
 
 const resolvers = {
   getBlog: getBlogById,
@@ -25,10 +27,11 @@ const resolvers = {
   loginUser: loginCurrentUser,
   toggleLike: toggleLikes,
   addComment: addComments,
+  deleteBlog: deleteBlogById,
+  certifyBlog: certifyBlogByModerator,
 };
 
 export default resolvers;
-
 
 // async ({ id }, context) => {
 //   try {

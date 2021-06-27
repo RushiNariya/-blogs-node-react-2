@@ -19,6 +19,12 @@
     top: 20px; 
 }
 
+/* .deleteIcon{
+  color: red;
+  position: absolute;
+  right: 29vw;
+} */
+
 @media only screen and (max-width: 690px) {
   .blog__body{
     flex-direction: column-reverse;

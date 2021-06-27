@@ -71,6 +71,7 @@ function AddBlog() {
         blogName,
         stack,
         description,
+        status: 'pending',
       },
       // refetchQueries: [{ query: getBlogsQuery }],
     })
