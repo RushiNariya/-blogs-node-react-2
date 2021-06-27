@@ -13,8 +13,8 @@ module.exports = async ({ page, limits, search }, context) => {
 
     const contextResult = await context();
 
-    if(contextResult){
-      if(contextResult.role === 'Moderator'){
+    if (contextResult) {
+      if (contextResult.role === 'Moderator') {
         status = 'pending';
         console.log('moderator');
       }
@@ -24,7 +24,7 @@ module.exports = async ({ page, limits, search }, context) => {
     const pageNumber = parseInt(page);
     // console.log(search);
     if (search === 'All') {
-      blogs = await Blog.find({ status: status})
+      blogs = await Blog.find({ status: status })
         .sort({
           blogName: 1,
         })

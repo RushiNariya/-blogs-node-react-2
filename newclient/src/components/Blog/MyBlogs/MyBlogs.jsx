@@ -115,7 +115,7 @@ function MyBlogs() {
                   blog={null}
                   myBlog="myblogs"
                   toggleLikeOnClick={null}
-                  // deleteBlogHandler={null}
+                    // deleteBlogHandler={null}
                 />
               </>
             ) : articles?.length ? (

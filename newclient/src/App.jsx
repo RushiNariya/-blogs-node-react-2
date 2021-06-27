@@ -7,7 +7,7 @@ import {
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { setContext } from '@apollo/client/link/context';
 import { Container } from '@material-ui/core';
-import React, { useContext } from 'react';
+import React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import Navigation from './components/Navigation/Navigation';
 import './App.css';
@@ -16,10 +16,12 @@ import BlogList from './components/Blog/BlogList/BlogList';
 import Registration from './components/Registration/Registration';
 // import { GlobalProvider } from './context/globalProvider';
 import Logout from './components/Logout/Logout';
-import BlogDetails from './components/BlogDetails/BlogDetails';
 import AddBlog from './components/AddBlog/AddBlog';
-import { GlobalContext } from './context/globalProvider';
+import BlogDetails from './components/BlogDetails/BlogDetails';
+// import AddBlog from './components/AddBlog/AddBlog';
+// import { GlobalContext } from './context/globalProvider';
 import MyBlogs from './components/Blog/MyBlogs/MyBlogs';
+import Authorization from './hoc/Authorization';
 
 const httpLink = createHttpLink({
   uri: 'http://localhost:8080/graphql',
@@ -43,7 +45,9 @@ const client = new ApolloClient({
 });
 
 function App() {
-  const { token, role } = useContext(GlobalContext);
+  // const { } = useContext(GlobalContext);
+  const author = Authorization(['Author']);
+  // console.log('inside app');
 
   return (
     <BrowserRouter>
@@ -56,12 +60,14 @@ function App() {
               <Switch>
                 <Route path="/login" exact component={Login} />
                 <Route path="/logout" exact component={Logout} />
-                {token && role === 'Author' ? (
+                {/* {token && role === 'Author' ? (
                   <Route path="/myblogs" exact component={MyBlogs} />
-                ) : null}
-                {token && role === 'Author' ? (
+                ) : null} */}
+                <Route path="/myblogs" exact component={author(MyBlogs)} />
+                {/* {token && role === 'Author' ? (
                   <Route path="/addblog" exact component={AddBlog} />
-                ) : null}
+                ) : null} */}
+                <Route path="/addblog" exact component={author(AddBlog)} />
                 <Route path="/registration" exact component={Registration} />
                 <Route path="/blog/:id" exact component={BlogDetails} />
                 <Route path="/" exact component={BlogList} />
